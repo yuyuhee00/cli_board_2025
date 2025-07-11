@@ -34,9 +34,14 @@ public class Main {
     }
 
 
-    private static void displayBbs(Map<String, String> bbs) {
-        Iterator<String> iterator = bbs.keySet().iterator();
+    private static void displayBbs(SequencedMap<String, String> bbs) {
         int count = 0;
+        if (bbs.isEmpty()) {
+            out.println("게시물이 없습니다.");
+            return;
+        }
+
+        Iterator<String> iterator = bbs.keySet().iterator();
         while (iterator.hasNext()) {
             String key = iterator.next();
             String value = bbs.get(key);
@@ -44,22 +49,26 @@ public class Main {
             out.printf("제목 : %s\n", key);
             out.printf("내용 : %s\n", value);
         }
-        System.out.println();
+        out.println();
     }
 
-    private static void doJob(Scanner scanner, String cmd, Map<String, String> bbs) {
+    private static boolean doJob(Scanner scanner, String cmd, SequencedMap<String, String> bbs) {
+        boolean result = false;
         if (cmd.equals("등록")) {
-            out.println("제목 : ");
+            out.print("제목 : ");
             String key = scanner.nextLine();
-            out.println("내용 : ");
+            out.print("내용 : ");
             String value = scanner.nextLine();
             bbs.put(key, value);
 
-            out.println("게시물이 등록 되었습니다.");
+            out.println("게시물이 등록 되었습니다.\n");
+            result = true;
         }
+
+        return result;
     }
     private static void stringInput() {
-        Map<String, String> bbs = new HashMap<>();
+        SequencedMap<String, String> bbs = new LinkedHashMap<>();
         Scanner scanner = new Scanner(System.in);
         String cmd = "";
         out.println("== 게시판 앱 ==");
@@ -67,8 +76,8 @@ public class Main {
             out.print("명령 : ");
             try {
                 cmd = scanner.nextLine();
-                doJob(scanner, cmd, bbs);
-                displayBbs(bbs);
+                if (doJob(scanner, cmd, bbs))
+                    displayBbs(bbs);
                  //scanner.nextLine();
             } catch (InputMismatchException e) {
                 out.println("입력 에러..");
