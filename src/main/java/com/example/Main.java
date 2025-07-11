@@ -61,12 +61,13 @@ public class Main {
             String value = scanner.nextLine();
             bbs.put(key, value);
 
-            out.println("게시물이 등록 되었습니다.\n");
+            out.printf("%d번 게시물이 등록 되었습니다.\n\n", bbs.size());
             result = true;
         }
 
         return result;
     }
+
     private static void stringInput() {
         SequencedMap<String, String> bbs = new LinkedHashMap<>();
         Scanner scanner = new Scanner(System.in);
@@ -91,7 +92,12 @@ public class Main {
 
         // Main.intInput();
 
-        Main.stringInput();
+        // Main.stringInput();
 
+        Scanner scanner = new Scanner(System.in);
+
+        new APP(scanner).run();
+
+        scanner.close();
     }
 }
