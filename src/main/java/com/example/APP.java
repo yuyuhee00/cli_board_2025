@@ -112,23 +112,6 @@ public class APP {
             return;
         }
 
-//        for (Article article : bbs) {
-//            String id = article.getId();
-//            String subject = article.getSubject();
-//            String content = article.getContent();
-//            out.printf("No. %s\n", id);
-//            out.printf("제목 : %s\n", subject);
-//            out.printf("내용 : %s\n", content);
-//        }
-
-//        for (int i = bbs.size()-1; i >= 0 ; i--) {
-//            Article article = bbs.get(i);
-//            String id = article.getId();
-//            String subject = article.getSubject();
-//            String content = article.getContent();
-//            out.printf("%s / %s /%s\n", id, subject, content);
-//        }
-
         for (Article article : bbs.reversed()) {
             String id = article.getId();
             String subject = article.getSubject();
