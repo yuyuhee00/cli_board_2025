@@ -41,10 +41,18 @@ public class APP {
             String id = scanner.nextLine();
             updateBbs(id, bbs);
 
-        } else if (cmd.equals("삭제")) {
-            out.print("번호 : ");
-            String id = scanner.nextLine();
-            deleteBbs(id, bbs);
+        } else if (cmd.startsWith("삭제")) {
+            if (cmd.contains("?")) {
+                String[] cmdList = cmd.split("\\?", 2);
+                if (cmdList.length == 2) {
+                    String[] params = cmdList[1].split("=", 2);
+                    if (params.length == 2) {
+                        String id = params[1].trim();
+                        if (!id.equals(""))
+                            deleteBbs(id, bbs);
+                    }
+                }
+            }
         }
     }
 
@@ -106,13 +114,27 @@ public class APP {
             return;
         }
 
-        for (Article article : bbs) {
-            String id = article.getId();
-            String subject = article.getSubject();
-            String content = article.getContent();
+//        for (Article article : bbs) {
+//            String id = article.getId();
+//            String subject = article.getSubject();
+//            String content = article.getContent();
 //            out.printf("No. %s\n", id);
 //            out.printf("제목 : %s\n", subject);
 //            out.printf("내용 : %s\n", content);
+//        }
+
+//        for (int i = bbs.size()-1; i >= 0 ; i--) {
+//            Article article = bbs.get(i);
+//            String id = article.getId();
+//            String subject = article.getSubject();
+//            String content = article.getContent();
+//            out.printf("%s / %s /%s\n", id, subject, content);
+//        }
+
+        for (Article article : bbs.reversed()) {
+            String id = article.getId();
+            String subject = article.getSubject();
+            String content = article.getContent();
             out.printf("%s / %s /%s\n", id, subject, content);
         }
 
