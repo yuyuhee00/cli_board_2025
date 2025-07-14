@@ -1,4 +1,4 @@
-package com.example;
+package article;
 
 public class Article {
     String id;

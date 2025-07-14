@@ -1,8 +1,4 @@
-package com.example;
-
 import java.util.*;
-
-import static java.lang.System.out;
 
 
 public class Main {
