@@ -13,15 +13,14 @@ public class APP {
     }
 
     public void run() {
-        SequencedMap<String, String> bbs = new LinkedHashMap<>();
+        List<Article> bbs = new ArrayList<>();
         String cmd = "";
         out.println("== 게시판 앱 ==");
         while (! cmd.equals("종료")) {
             out.print("명령 : ");
             try {
                 cmd = this.scanner.nextLine();
-                if (doJob(this.scanner, cmd, bbs))
-                    displayBbs(bbs);
+                doJob(this.scanner, cmd, bbs);
                 //scanner.nextLine();
             } catch (InputMismatchException e) {
                 out.println("입력 에러..");
@@ -30,37 +29,47 @@ public class APP {
         }
     }
 
-    private boolean doJob(Scanner scanner, String cmd, SequencedMap<String, String> bbs) {
-        boolean result = false;
+    private void doJob(Scanner scanner, String cmd, List<Article> bbs) {
         if (cmd.equals("등록")) {
             out.print("제목 : ");
-            String key = scanner.nextLine();
+            String subject = scanner.nextLine();
             out.print("내용 : ");
-            String value = scanner.nextLine();
-            bbs.put(key, value);
-
+            String content = scanner.nextLine();
+            Article article = new Article(String.valueOf(bbs.size()+1), subject, content);
+            bbs.add(article);
             out.printf("%d번 게시물이 등록 되었습니다.\n\n", bbs.size());
-            result = true;
-        }
 
-        return result;
+        } else if (cmd.equals("목록")) {
+            displayBbs(bbs);
+        }
     }
 
-    private void displayBbs(SequencedMap<String, String> bbs) {
-        int count = 0;
+    private void displayBbs(List<Article> bbs) {
         if (bbs.isEmpty()) {
             out.println("게시물이 없습니다.");
             return;
         }
 
-        Iterator<String> iterator = bbs.keySet().iterator();
-        while (iterator.hasNext()) {
-            String key = iterator.next();
-            String value = bbs.get(key);
-            out.printf("No. %d\n", ++count);
-            out.printf("제목 : %s\n", key);
-            out.printf("내용 : %s\n", value);
+//        Iterator<Article> iterator = bbs.iterator();
+//        while (iterator.hasNext()) {
+//            Article article = iterator.next();
+//            String id = article.getId();
+//            String subject = article.getSubject();
+//            String content = article.getContent();
+//            out.printf("No. %s\n", id);
+//            out.printf("제목 : %s\n", subject);
+//            out.printf("내용 : %s\n", content);
+//        }
+
+        for (Article article : bbs) {
+            String id = article.getId();
+            String subject = article.getSubject();
+            String content = article.getContent();
+            out.printf("No. %s\n", id);
+            out.printf("제목 : %s\n", subject);
+            out.printf("내용 : %s\n", content);
         }
+
         out.println();
     }
 }
