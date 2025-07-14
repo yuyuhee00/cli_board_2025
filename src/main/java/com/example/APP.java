@@ -7,20 +7,21 @@ import static java.lang.System.out;
 public class APP {
 
     Scanner scanner;
+    List<Article> bbs;
 
     public APP(Scanner scanner) {
         this.scanner = scanner;
+        this.bbs = new ArrayList<>();
     }
 
     public void run() {
-        List<Article> bbs = new ArrayList<>();
         String cmd = "";
         out.println("== 게시판 앱 ==");
         while (! cmd.equals("종료")) {
             out.print("명령 : ");
             try {
                 cmd = this.scanner.nextLine();
-                doJob(this.scanner, cmd, bbs);
+                doJob(this.scanner, cmd);
                 //scanner.nextLine();
             } catch (InputMismatchException e) {
                 out.println("입력 에러..");
@@ -29,12 +30,12 @@ public class APP {
         }
     }
 
-    private void doJob(Scanner scanner, String cmd, List<Article> bbs) {
+    private void doJob(Scanner scanner, String cmd) {
         if (cmd.equals("등록")) {
-            insertBbs(bbs);
+            insertBbs();
 
         } else if (cmd.equals("목록")) {
-            displayBbs(bbs);
+            displayBbs();
         }
         else {
             if (cmd.startsWith("수정") || cmd.startsWith("삭제")) {
@@ -46,9 +47,9 @@ public class APP {
                             String id = params[1].trim();
                             if (!id.equals("")) {
                                 if (cmd.startsWith("수정"))
-                                    updateBbs(id, bbs);
+                                    updateBbs(id);
                                 else if (cmd.startsWith("삭제"))
-                                deleteBbs(id, bbs);
+                                deleteBbs(id);
                             }
                         }
                     }
@@ -57,23 +58,23 @@ public class APP {
         }
     }
 
-    private void insertBbs(List<Article> bbs) {
+    private void insertBbs() {
         out.print("제목 : ");
         String subject = scanner.nextLine();
         out.print("내용 : ");
         String content = scanner.nextLine();
-        Article article = new Article(String.valueOf(bbs.size()+1), subject, content);
-        bbs.add(article);
-        out.printf("%d번 게시물이 등록 되었습니다.\n\n", bbs.size());
+        Article article = new Article(String.valueOf(this.bbs.size()+1), subject, content);
+        this.bbs.add(article);
+        out.printf("%d번 게시물이 등록 되었습니다.\n\n", this.bbs.size());
     }
 
-    private void updateBbs(String id, List<Article> bbs) {
-        if (bbs.isEmpty()) {
+    private void updateBbs(String id) {
+        if (this.bbs.isEmpty()) {
             out.println("게시물이 없습니다.");
             return;
         }
 
-        Article article = findById(id, bbs);
+        Article article = findById(id);
         if (article != null) {
             out.printf("제목(기존) : %s\n", article.getSubject());
             out.print("제목 :");
@@ -82,8 +83,10 @@ public class APP {
             out.print("내용:");
             String content = scanner.nextLine();
 
-            article.setSubject(subject);
-            article.setContent(content);
+            if (subject != null)
+                article.setSubject(subject);
+            if (content != null)
+                article.setContent(content);
         } else {
             out.printf("%s번 게시물이 등록되어 있지 않습니다..\n\n", id);
         }
@@ -91,28 +94,28 @@ public class APP {
         out.println();
     }
 
-    private void deleteBbs(String id, List<Article> bbs) {
-        if (bbs.isEmpty()) {
+    private void deleteBbs(String id) {
+        if (this.bbs.isEmpty()) {
             out.println("게시물이 없습니다.");
             return;
         }
 
-        Article article = findById(id, bbs);
+        Article article = findById(id);
         if (article != null) {
-            bbs.remove(article);
+            this.bbs.remove(article);
             out.printf("%s번 게시물이 삭제 되었습니다.\n\n", id);
         } else {
             out.printf("%s번 게시물이 등록되어 있지 않습니다..\n\n", id);
         }
     }
 
-    private void displayBbs(List<Article> bbs) {
+    private void displayBbs() {
         if (bbs.isEmpty()) {
             out.println("게시물이 없습니다.");
             return;
         }
 
-        for (Article article : bbs.reversed()) {
+        for (Article article : this.bbs.reversed()) {
             String id = article.getId();
             String subject = article.getSubject();
             String content = article.getContent();
@@ -122,8 +125,8 @@ public class APP {
         out.println();
     }
 
-    private Article findById(String id, List<Article> bbs) {
-        for (Article article : bbs) {
+    private Article findById(String id) {
+        for (Article article : this.bbs) {
             if (article.getId().equals(id)) {
                 return article;
             }
