@@ -69,10 +69,7 @@ public class APP {
     }
 
     private void updateBbs(String id) {
-        if (this.bbs.isEmpty()) {
-            out.println("게시물이 없습니다.");
-            return;
-        }
+        if (emptyThenReturn()) return;
 
         Article article = findById(id);
         if (article != null) {
@@ -95,10 +92,7 @@ public class APP {
     }
 
     private void deleteBbs(String id) {
-        if (this.bbs.isEmpty()) {
-            out.println("게시물이 없습니다.");
-            return;
-        }
+        if (emptyThenReturn()) return;
 
         Article article = findById(id);
         if (article != null) {
@@ -110,10 +104,7 @@ public class APP {
     }
 
     private void displayBbs() {
-        if (bbs.isEmpty()) {
-            out.println("게시물이 없습니다.");
-            return;
-        }
+        if (emptyThenReturn()) return;
 
         for (Article article : this.bbs.reversed()) {
             String id = article.getId();
@@ -132,5 +123,13 @@ public class APP {
             }
         }
         return null;
+    }
+
+    private boolean emptyThenReturn() {
+        if (this.bbs.isEmpty()) {
+            out.println("게시물이 없습니다.");
+            return true;
+        }
+        return false;
     }
 }
