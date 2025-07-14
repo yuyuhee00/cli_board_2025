@@ -35,21 +35,22 @@ public class APP {
 
         } else if (cmd.equals("목록")) {
             displayBbs(bbs);
-
-        } else if (cmd.equals("수정")) {
-            out.print("번호 : ");
-            String id = scanner.nextLine();
-            updateBbs(id, bbs);
-
-        } else if (cmd.startsWith("삭제")) {
-            if (cmd.contains("?")) {
-                String[] cmdList = cmd.split("\\?", 2);
-                if (cmdList.length == 2) {
-                    String[] params = cmdList[1].split("=", 2);
-                    if (params.length == 2) {
-                        String id = params[1].trim();
-                        if (!id.equals(""))
-                            deleteBbs(id, bbs);
+        }
+        else {
+            if (cmd.startsWith("수정") || cmd.startsWith("삭제")) {
+                if (cmd.contains("?")) {
+                    String[] cmdList = cmd.split("\\?", 2);
+                    if (cmdList.length == 2) {
+                        String[] params = cmdList[1].split("=", 2);
+                        if (params.length == 2 && params[0].equals("id")) {
+                            String id = params[1].trim();
+                            if (!id.equals("")) {
+                                if (cmd.startsWith("수정"))
+                                    updateBbs(id, bbs);
+                                else if (cmd.startsWith("삭제"))
+                                deleteBbs(id, bbs);
+                            }
+                        }
                     }
                 }
             }
@@ -74,15 +75,12 @@ public class APP {
 
         Article article = findById(id, bbs);
         if (article != null) {
-            out.printf("제목 : %s", article.getSubject());
-            out.print("===> :");
+            out.printf("제목(기존) : %s\n", article.getSubject());
+            out.print("제목 :");
             String subject = scanner.nextLine();
-            out.printf("제목 수정 후 : %s\n", subject);
-
-            out.printf("내용 : %s", article.getContent());
-            out.print("===> :");
+            out.printf("내용(기존) : %s\n", article.getContent());
+            out.print("내용:");
             String content = scanner.nextLine();
-            out.printf("내용 수정 후 : %s\n", content);
 
             article.setSubject(subject);
             article.setContent(content);
