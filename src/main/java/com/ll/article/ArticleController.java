@@ -1,25 +1,23 @@
-package article;
+package com.ll.article;
+
+import com.ll.Container;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 import static java.lang.System.out;
 
 public class ArticleController {
 
-    Scanner scanner;
     List<Article> articles = new ArrayList<>();
 
-    public ArticleController(Scanner scanner) {
-        this.scanner = scanner;
-    }
+    public ArticleController() {}
 
-    public void add() {
+    public void write() {
         out.print("제목 : ");
-        String subject = this.scanner.nextLine();
+        String subject = Container.getScanner().nextLine().trim();
         out.print("내용 : ");
-        String content = this.scanner.nextLine();
+        String content = Container.getScanner().nextLine().trim();
         Article article = new Article(String.valueOf(this.articles.size()+1), subject, content);
         this.articles.add(article);
         out.printf("%d번 게시물이 등록 되었습니다.\n\n", this.articles.size());
@@ -38,10 +36,10 @@ public class ArticleController {
                         if (article != null) {
                             out.printf("제목(기존) : %s\n", article.getSubject());
                             out.print("제목 :");
-                            String subject = scanner.nextLine();
+                            String subject = Container.getScanner().nextLine();
                             out.printf("내용(기존) : %s\n", article.getContent());
                             out.print("내용:");
-                            String content = scanner.nextLine();
+                            String content = Container.getScanner().nextLine();
 
                             if (subject != null)
                                 article.setSubject(subject);

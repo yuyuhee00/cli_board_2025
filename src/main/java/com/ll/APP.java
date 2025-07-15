@@ -1,5 +1,7 @@
-import article.*;
-import system.SystemController;
+package com.ll;
+
+import com.ll.article.ArticleController;
+import com.ll.system.SystemController;
 
 import java.util.*;
 
@@ -10,9 +12,9 @@ public class APP {
     Scanner scanner;
     ArticleController articleController;
     SystemController systemController;
-    public APP(Scanner scanner) {
-        this.scanner = scanner;
-        this.articleController = new ArticleController(scanner);
+
+    public APP() {
+        this.articleController = new ArticleController();
         this.systemController = new SystemController();
     }
 
@@ -21,13 +23,13 @@ public class APP {
         out.println("== 게시판 앱 ==");
         while (true) {
             out.print("명령 : ");
-            cmd = scanner.nextLine().trim();
+            cmd = Container.getScanner().nextLine().trim();
 
             if (cmd.equals("종료")) {
                 SystemController.exit();
             }
             else if (cmd.equals("등록")) {
-                articleController.add();
+                articleController.write();
             }
             else if (cmd.equals("목록")) {
                 articleController.list();

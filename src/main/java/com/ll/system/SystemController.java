@@ -1,4 +1,4 @@
-package system;
+package com.ll.system;
 
 public class SystemController {
     public static void exit() {

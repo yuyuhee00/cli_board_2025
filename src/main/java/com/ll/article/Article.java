@@ -1,4 +1,4 @@
-package article;
+package com.ll.article;
 
 public class Article {
     String id;
