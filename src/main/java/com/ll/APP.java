@@ -19,27 +19,31 @@ public class APP {
     }
 
     public void run() {
-        String cmd;
+
         out.println("== 게시판 앱 ==");
+
         while (true) {
             out.print("명령 : ");
-            cmd = Container.getScanner().nextLine().trim();
+            String cmd = Container.getScanner().nextLine().trim();
+            Request request = new Request(cmd);
 
-            if (cmd.equals("종료")) {
+            if (request.getActionCode().equals("종료")) {
                 SystemController.exit();
             }
-            else if (cmd.equals("등록")) {
+            else if (request.getActionCode().equals("등록")) {
                 articleController.write();
             }
-            else if (cmd.equals("목록")) {
+            else if (request.getActionCode().equals("목록")) {
                 articleController.list();
             }
-            else if (cmd.startsWith("수정")) {
-                articleController.update(cmd);
+            else if (request.getActionCode().startsWith("수정")) {
+                articleController.update(request);
             }
-            else if (cmd.startsWith("삭제")) {
-                articleController.delete(cmd);
+            else if (request.getActionCode().startsWith("삭제")) {
+                articleController.delete(request);
             }
+
+            request = null;
         }
     }
 

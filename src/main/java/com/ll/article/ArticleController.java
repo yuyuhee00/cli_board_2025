@@ -1,6 +1,7 @@
 package com.ll.article;
 
 import com.ll.Container;
+import com.ll.Request;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,58 +24,44 @@ public class ArticleController {
         out.printf("%d번 게시물이 등록 되었습니다.\n\n", this.articles.size());
     }
 
-    public void update(String cmd) {
+    public void update(Request request) {
         if (emptyThenReturn()) return;
-        if (cmd.contains("?")) {
-            String[] cmdList = cmd.split("\\?", 2);
-            if (cmdList.length == 2) {
-                String[] params = cmdList[1].split("=", 2);
-                if (params.length == 2 && params[0].equals("id")) {
-                    String id = params[1].trim();
-                    if (!id.equals("")) {
-                        Article article = findById(id);
-                        if (article != null) {
-                            out.printf("제목(기존) : %s\n", article.getSubject());
-                            out.print("제목 :");
-                            String subject = Container.getScanner().nextLine();
-                            out.printf("내용(기존) : %s\n", article.getContent());
-                            out.print("내용:");
-                            String content = Container.getScanner().nextLine();
 
-                            if (subject != null)
-                                article.setSubject(subject);
-                            if (content != null)
-                                article.setContent(content);
-                        } else {
-                            out.printf("%s번 게시물이 등록되어 있지 않습니다..\n\n", id);
-                        }
-                        out.println();
-                    }
-                }
+        String id = request.getParam("id");
+        if (!id.equals("")) {
+            Article article = findById(id);
+            if (article != null) {
+                out.printf("제목(기존) : %s\n", article.getSubject());
+                out.print("제목 :");
+                String subject = Container.getScanner().nextLine();
+                out.printf("내용(기존) : %s\n", article.getContent());
+                out.print("내용:");
+                String content = Container.getScanner().nextLine();
+
+                if (subject != null)
+                    article.setSubject(subject);
+                if (content != null)
+                    article.setContent(content);
+            } else {
+                out.printf("%s번 게시물이 등록되어 있지 않습니다..\n\n", id);
             }
+            out.println();
         }
     }
 
-    public void delete(String cmd) {
+    public void delete(Request request) {
         if (emptyThenReturn()) return;
-        if (cmd.contains("?")) {
-            String[] cmdList = cmd.split("\\?", 2);
-            if (cmdList.length == 2) {
-                String[] params = cmdList[1].split("=", 2);
-                if (params.length == 2 && params[0].equals("id")) {
-                    String id = params[1].trim();
-                    if (!id.equals("")) {
-                        Article article = findById(id);
-                        if (article != null) {
-                            this.articles.remove(article);
-                            out.printf("%s번 게시물이 삭제 되었습니다.\n\n", id);
-                        } else {
-                            out.printf("%s번 게시물이 등록되어 있지 않습니다..\n\n", id);
-                        }
-                        out.println();
-                    }
-                }
+
+        String id = request.getParam("id");
+        if (!id.equals("")) {
+            Article article = findById(id);
+            if (article != null) {
+                this.articles.remove(article);
+                out.printf("%s번 게시물이 삭제 되었습니다.\n\n", id);
+            } else {
+                out.printf("%s번 게시물이 등록되어 있지 않습니다..\n\n", id);
             }
+            out.println();
         }
     }
 
