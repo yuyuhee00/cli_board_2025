@@ -10,7 +10,7 @@ import static java.lang.System.out;
 
 public class ArticleController {
 
-    ArticleService articleService;
+    private ArticleService articleService;
 
     public ArticleController() {
         this.articleService = new ArticleService();
@@ -33,7 +33,10 @@ public class ArticleController {
     }
 
     public void update(Request request) {
-        if (this.articleService.isEmpty()) return;
+        if (this.articleService.isEmpty()) {
+            out.print("등록된 계시물이 없습니다.\n");
+            return;
+        }
 
         String id = request.getParam("id");
         if (id != null && !id.equals("")) {
@@ -59,7 +62,10 @@ public class ArticleController {
     }
 
     public void delete(Request request) {
-        if (this.articleService.isEmpty()) return;
+        if (this.articleService.isEmpty()) {
+            out.print("등록된 계시물이 없습니다.\n");
+            return;
+        }
 
         String id = request.getParam("id");
         if (id != null && !id.equals("")) {
@@ -74,24 +80,16 @@ public class ArticleController {
     }
 
     public void list() {
-        if (this.articleService.isEmpty()) return;
+        if (this.articleService.isEmpty()) {
+            out.print("등록된 계시물이 없습니다.\n");
+            return;
+        }
 
-//        for (Article article : this.articleService.findAll().reversed()) {
-//            String id = article.getId();
-//            String subject = article.getSubject();
-//            String content = article.getContent();
-//            out.printf("%s / %s /%s\n", id, subject, content);
-//        }
-
-        for (int i = 0; i < this.articleService.articles.size(); i++) {
-            Article article = this.articleService.articles.get(i);
+        for (Article article : this.articleService.findAll().reversed()) {
             String id = article.getId();
             String subject = article.getSubject();
             String content = article.getContent();
-            out.printf("%s / %s /%s", id, subject, content);
-            if (i < this.articleService.articles.size() - 1) {
-                out.print("\n");
-            }
+            out.printf("%s / %s /%s\n", id, subject, content);
         }
 
         out.print("\n");

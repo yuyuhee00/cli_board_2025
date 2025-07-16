@@ -7,72 +7,41 @@ import static java.lang.System.out;
 
 public class ArticleService {
 
-    List<Article> articles = new ArrayList<>();
+    private ArticleRepository articleRepository;
 
-    public ArticleService() {}
+    public ArticleService() {
+        this.articleRepository = new ArticleRepository();
+    }
 
     public String create(String subject, String content) {
-        Article article = new Article(String.valueOf(this.articles.size()+1), subject, content);
-        this.articles.add(article);
-        return article.getId();
+        return this.articleRepository.create(subject, content);
     }
 
     public Boolean remove(String id) {
-        Article article = this.getFindById(id);
-        if (article != null) {
-            this.articles.remove(article);
-            return true;
-        }
-        return false;
+        return this.articleRepository.remove(id);
     }
 
     public Boolean remove(Article article) {
-        if (this.articles.contains(article)) {
-            this.articles.remove(article);
-            return true;
-        }
-        return false;
+        return this.articleRepository.remove(article);
     }
 
     public Boolean modify(String id, String subject, String content) {
-        Article article = this.getFindById(id);
-        if (article != null) {
-            article.setSubject(subject);
-            article.setContent(content);
-            return true;
-        }
-
-        return false;
+        return this.articleRepository.modify(id, subject, content);
     }
 
     public Boolean modify(Article article, String subject, String content) {
-        if (article != null) {
-            article.setSubject(subject);
-            article.setContent(content);
-            return true;
-        }
-
-        return false;
+        return this.articleRepository.modify(article, subject, content);
     }
 
     public List<Article> findAll() {
-        return this.articles;
+        return this.articleRepository.findAll();
     }
 
     public Article getFindById(String id) {
-        for (Article article : this.articles) {
-            if (article.getId().equals(id)) {
-                return article;
-            }
-        }
-        return null;
+        return this.articleRepository.getFindById(id);
     }
 
     public boolean isEmpty() {
-        if (this.articles.isEmpty()) {
-            out.println("게시물이 없습니다.");
-            return true;
-        }
-        return false;
+        return this.articleRepository.isEmpty();
     }
 }
