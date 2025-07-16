@@ -10,26 +10,34 @@ import static java.lang.System.out;
 
 public class ArticleController {
 
-    List<Article> articles = new ArrayList<>();
+    ArticleService articleService;
 
-    public ArticleController() {}
+    public ArticleController() {
+        this.articleService = new ArticleService();
+    }
 
     public void write() {
         out.print("제목 : ");
         String subject = Container.getScanner().nextLine().trim();
         out.print("내용 : ");
         String content = Container.getScanner().nextLine().trim();
-        Article article = new Article(String.valueOf(this.articles.size()+1), subject, content);
-        this.articles.add(article);
-        out.printf("%d번 게시물이 등록 되었습니다.\n\n", this.articles.size());
+
+        String id = this.articleService.create(subject, content);
+        if (id != null) {
+            out.printf("%s번 게시물이 등록되었습니다..", id);
+        } else {
+            out.printf("%s번 게시물이 등록되지 않았습니다.", id);
+        }
+
+        out.print("\n");
     }
 
     public void update(Request request) {
-        if (emptyThenReturn()) return;
+        if (this.articleService.isEmpty()) return;
 
         String id = request.getParam("id");
-        if (!id.equals("")) {
-            Article article = findById(id);
+        if (id != null && !id.equals("")) {
+            Article article = this.articleService.getFindById(id);
             if (article != null) {
                 out.printf("제목(기존) : %s\n", article.getSubject());
                 out.print("제목 :");
@@ -38,61 +46,55 @@ public class ArticleController {
                 out.print("내용:");
                 String content = Container.getScanner().nextLine();
 
-                if (subject != null)
-                    article.setSubject(subject);
-                if (content != null)
-                    article.setContent(content);
+                if (this.articleService.modify(article, subject, content))
+                    out.printf("%s번 게시물이 변경되었습니다.", id);
+                else
+                    out.printf("%s번 게시물이 변경되지 않았습니다.", id);
+
             } else {
-                out.printf("%s번 게시물이 등록되어 있지 않습니다..\n\n", id);
+                out.printf("%s번 게시물이 등록되어 있지 않습니다..", id);
             }
-            out.println();
         }
+        out.print("\n");
     }
 
     public void delete(Request request) {
-        if (emptyThenReturn()) return;
+        if (this.articleService.isEmpty()) return;
 
         String id = request.getParam("id");
-        if (!id.equals("")) {
-            Article article = findById(id);
-            if (article != null) {
-                this.articles.remove(article);
-                out.printf("%s번 게시물이 삭제 되었습니다.\n\n", id);
+        if (id != null && !id.equals("")) {
+            if (this.articleService.remove(id)) {
+                out.printf("%s번 게시물이 삭제 되었습니다.", id);
             } else {
-                out.printf("%s번 게시물이 등록되어 있지 않습니다..\n\n", id);
+                out.printf("%s번 게시물이 등록되어 있지 않습니다..", id);
             }
-            out.println();
         }
+
+        out.print("\n");
     }
 
     public void list() {
-        if (emptyThenReturn()) return;
+        if (this.articleService.isEmpty()) return;
 
-        for (Article article : this.articles.reversed()) {
+//        for (Article article : this.articleService.findAll().reversed()) {
+//            String id = article.getId();
+//            String subject = article.getSubject();
+//            String content = article.getContent();
+//            out.printf("%s / %s /%s\n", id, subject, content);
+//        }
+
+        for (int i = 0; i < this.articleService.articles.size(); i++) {
+            Article article = this.articleService.articles.get(i);
             String id = article.getId();
             String subject = article.getSubject();
             String content = article.getContent();
-            out.printf("%s / %s /%s\n", id, subject, content);
-        }
-
-        out.println();
-    }
-
-    private Article findById(String id) {
-        for (Article article : this.articles) {
-            if (article.getId().equals(id)) {
-                return article;
+            out.printf("%s / %s /%s", id, subject, content);
+            if (i < this.articleService.articles.size() - 1) {
+                out.print("\n");
             }
         }
-        return null;
-    }
 
-    private boolean emptyThenReturn() {
-        if (this.articles.isEmpty()) {
-            out.println("게시물이 없습니다.");
-            return true;
-        }
-        return false;
+        out.print("\n");
     }
 }
 
