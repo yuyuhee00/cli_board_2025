@@ -13,14 +13,7 @@ public class Request {
     public Request(String command) {
         String[] commandList = command.split("\\?", 2);
         this.actionCode = commandList[0].trim();
-        /*
-        if (commandList.length > 1) {
-            String[] params = commandList[1].split("=", 2);q
-            if (params.length == 2 && params[0].equals("id")) {
-                this.index = params[1].trim();
-            }
-        }
-        */
+
         if (commandList.length == 1) return;
 
         String[] paramList = commandList[1].split("&", 2);

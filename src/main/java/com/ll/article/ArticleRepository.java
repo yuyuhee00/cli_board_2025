@@ -6,8 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static java.lang.System.out;
-
 public class ArticleRepository {
 
     public ArticleRepository() {}
@@ -58,7 +56,7 @@ public class ArticleRepository {
         Article article = null;
         String query = String.format("select * from article where id=%d", Integer.valueOf(id));
         Map<String, Object> row = Container.getDbConnection().selectRow(query);
-        if (row != null) {
+        if (row != null && !row.isEmpty()) {
             article = new Article();
             article.setId(row.get("id").toString());
             article.setSubject(row.get("subject").toString());
@@ -70,6 +68,6 @@ public class ArticleRepository {
     public boolean isEmpty() {
         String query = "select count(*) from article";
         Map<String, Object> row = Container.getDbConnection().selectRow(query);
-        return (row.size() == 0);
+        return row.isEmpty();
     }
 }
