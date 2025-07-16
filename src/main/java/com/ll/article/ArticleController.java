@@ -57,6 +57,7 @@ public class ArticleController {
                 out.printf("%s번 게시물이 등록되어 있지 않습니다..", id);
             }
         }
+
         out.print("\n");
     }
 

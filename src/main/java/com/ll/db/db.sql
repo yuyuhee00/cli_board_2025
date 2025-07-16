@@ -15,3 +15,5 @@ subject = "test3",
 content = "test3";
 
 SELECT * FROM article;
+
+truncate TABLE article;

@@ -3,16 +3,19 @@ package com.ll.article;
 import java.util.Map;
 
 public class Article {
+
     String id;
     String subject;
     String content;
 
     public Article() {}
+
     public Article(String id, String subject, String content) {
         this.id = id;
         this.subject = subject;
         this.content = content;
     }
+
     public Article(Map<String, Object> row) {
         this.id = String.valueOf(row.get("id"));
         this.subject = (String) row.get("subject");

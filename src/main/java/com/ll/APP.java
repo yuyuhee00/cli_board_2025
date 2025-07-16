@@ -8,9 +8,8 @@ import static java.lang.System.out;
 
 public class APP {
 
-    ArticleController articleController;
-    SystemController systemController;
-
+    private ArticleController articleController;
+    private SystemController systemController;
 
     public APP() {
         this.articleController = new ArticleController();
@@ -20,9 +19,7 @@ public class APP {
         DBConnection.DB_PORT = 3306;
         DBConnection.DB_USER = "root";
         DBConnection.DB_PASSWORD = "1234";
-
         Container.getDbConnection().connect();
-
     }
 
     public void run() {
