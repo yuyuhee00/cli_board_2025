@@ -17,7 +17,9 @@ public class Container {
     }
     public static void close() {
         scanner.close();
+        dbConnection.close();
     }
+
     public static Scanner getScanner() {
         return scanner;
     }

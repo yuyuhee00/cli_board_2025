@@ -37,8 +37,8 @@ public class ArticleService {
         return this.articleRepository.findAll();
     }
 
-    public Article getFindById(String id) {
-        return this.articleRepository.getFindById(id);
+    public Article findById(String id) {
+        return this.articleRepository.findById(id);
     }
 
     public boolean isEmpty() {

@@ -10,59 +10,41 @@ import static java.lang.System.out;
 
 public class ArticleRepository {
 
-     private  List<Article> articles;
-
-    public ArticleRepository() {
-        this.articles = new ArrayList<>();
-    }
+    public ArticleRepository() {}
 
     public String create(String subject, String content) {
-        Article article = new Article(String.valueOf(this.articles.size()+1), subject, content);
-        this.articles.add(article);
-        return article.getId();
+        String query = String.format("insert into article set subject='%s', content='%s'", subject, content);
+        int id = Container.getDbConnection().insert(query);
+        return String.valueOf(id);
     }
 
     public Boolean remove(String id) {
-        Article article = this.getFindById(id);
+        Article article = this.findById(id);
         if (article != null) {
-            this.articles.remove(article);
-            return true;
+            String query = String.format("delete from article where id='%s'", id);
+            int row = Container.getDbConnection().delete(query);
+            return (row == 1);
         }
         return false;
     }
 
     public Boolean remove(Article article) {
-        if (this.articles.contains(article)) {
-            this.articles.remove(article);
-            return true;
-        }
-        return false;
+        return this.remove(article.getId());
     }
 
     public Boolean modify(String id, String subject, String content) {
-        Article article = this.getFindById(id);
-        if (article != null) {
-            article.setSubject(subject);
-            article.setContent(content);
-            return true;
-        }
-
-        return false;
+        String query = String.format("update  article set subject='%s', content='%s' where id=%d",
+                subject, content, Integer.valueOf(id));
+        int row = Container.getDbConnection().update(query);
+        return (row == 1);
     }
 
     public Boolean modify(Article article, String subject, String content) {
-        if (article != null) {
-            article.setSubject(subject);
-            article.setContent(content);
-            return true;
-        }
-
-        return false;
+        return this.modify(article.getId(), subject, content);
     }
 
     public List<Article> findAll() {
-//        List<Article> articles = new ArrayList<>();
-
+        List<Article> articles = new ArrayList<>();
         String query = "select * from article";
         List<Map<String, Object>>  rows = Container.getDbConnection().selectRows(query);
         for (Map<String, Object> row : rows) {
@@ -72,16 +54,22 @@ public class ArticleRepository {
         return articles;
     }
 
-    public Article getFindById(String id) {
-        for (Article article : this.articles) {
-            if (article.getId().equals(id)) {
-                return article;
-            }
+    public Article findById(String id) {
+        Article article = null;
+        String query = String.format("select * from article where id=%d", Integer.valueOf(id));
+        Map<String, Object> row = Container.getDbConnection().selectRow(query);
+        if (row != null) {
+            article = new Article();
+            article.setId(row.get("id").toString());
+            article.setSubject(row.get("subject").toString());
+            article.setContent(row.get("content").toString());
         }
-        return null;
+        return article;
     }
 
     public boolean isEmpty() {
-        return this.articles.isEmpty();
+        String query = "select count(*) from article";
+        Map<String, Object> row = Container.getDbConnection().selectRow(query);
+        return (row.size() == 0);
     }
 }

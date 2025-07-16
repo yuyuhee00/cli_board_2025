@@ -40,7 +40,7 @@ public class ArticleController {
 
         String id = request.getParam("id");
         if (id != null && !id.equals("")) {
-            Article article = this.articleService.getFindById(id);
+            Article article = this.articleService.findById(id);
             if (article != null) {
                 out.printf("제목(기존) : %s\n", article.getSubject());
                 out.print("제목 :");
