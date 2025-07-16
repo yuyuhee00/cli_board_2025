@@ -1,5 +1,7 @@
 package com.ll.article;
 
+import java.util.Map;
+
 public class Article {
     String id;
     String subject;
@@ -10,6 +12,11 @@ public class Article {
         this.id = id;
         this.subject = subject;
         this.content = content;
+    }
+    public Article(Map<String, Object> row) {
+        this.id = String.valueOf(row.get("id"));
+        this.subject = (String) row.get("subject");
+        this.content = (String) row.get("content");
     }
 
     public String getId() {

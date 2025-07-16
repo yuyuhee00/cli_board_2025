@@ -1,6 +1,7 @@
 package com.ll;
 
 import com.ll.article.ArticleController;
+import com.ll.db.DBConnection;
 import com.ll.system.SystemController;
 
 import java.util.*;
@@ -9,13 +10,21 @@ import static java.lang.System.out;
 
 public class APP {
 
-    Scanner scanner;
     ArticleController articleController;
     SystemController systemController;
+
 
     public APP() {
         this.articleController = new ArticleController();
         this.systemController = new SystemController();
+
+        DBConnection.DB_NAME = "proj1";
+        DBConnection.DB_PORT = 3306;
+        DBConnection.DB_USER = "root";
+        DBConnection.DB_PASSWORD = "1234";
+
+        Container.getDbConnection().connect();
+
     }
 
     public void run() {

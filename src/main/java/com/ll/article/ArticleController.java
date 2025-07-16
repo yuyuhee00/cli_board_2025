@@ -80,12 +80,13 @@ public class ArticleController {
     }
 
     public void list() {
-        if (this.articleService.isEmpty()) {
+        List<Article> articles = this.articleService.findAll().reversed();
+        if (articles.isEmpty()) {
             out.print("등록된 계시물이 없습니다.\n");
             return;
         }
 
-        for (Article article : this.articleService.findAll().reversed()) {
+        for (Article article : articles) {
             String id = article.getId();
             String subject = article.getSubject();
             String content = article.getContent();

@@ -1,17 +1,19 @@
 package com.ll.article;
 
+import com.ll.Container;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import static java.lang.System.out;
 
 public class ArticleRepository {
 
-   private  List<Article> articles;
+     private  List<Article> articles;
 
     public ArticleRepository() {
         this.articles = new ArrayList<>();
-
     }
 
     public String create(String subject, String content) {
@@ -59,7 +61,15 @@ public class ArticleRepository {
     }
 
     public List<Article> findAll() {
-        return this.articles;
+//        List<Article> articles = new ArrayList<>();
+
+        String query = "select * from article";
+        List<Map<String, Object>>  rows = Container.getDbConnection().selectRows(query);
+        for (Map<String, Object> row : rows) {
+            Article article = new Article(row);
+            articles.add(article);
+        }
+        return articles;
     }
 
     public Article getFindById(String id) {

@@ -14,11 +14,11 @@ public class DBConnection {
     public static int DB_PORT;
 
     public void connect() {
+        String driverName = "com.mysql.cj.jdbc.Driver";
         String url = "jdbc:mysql://localhost:" + DB_PORT + "/" + DB_NAME
-                + "?serverTimezone=Asia/Seoul&useOldAliasMetadataBehavior=true";
+               + "?serverTimezone=Asia/Seoul&useOldAliasMetadataBehavior=true";
         String user = DB_USER;
         String password = DB_PASSWORD;
-        String driverName = "com.mysql.cj.jdbc.Driver";
 
         try {
             connection = DriverManager.getConnection(url, user, password);
